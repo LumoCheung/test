@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true"  scanPeriod="1 seconds">
+	<contextListener class="ch.qos.logback.classic.jul.LevelChangePropagator">
+		<resetJUL>true</resetJUL>
+	</contextListener>
+	
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>logbak: %d{yyyy-MM-dd HH:mm:ss.SSS}] [%thread] [%-5level] %logger{36} - %msg%n</pattern>
+		</encoder>
+	</appender>
+	<!-- web开发可以看到参数类型相关的4XX错误 -->
+	<logger name="org.springframework.web" level="debug" /> 
+	
+	<root level="debug">
+		<appender-ref ref="STDOUT" />
+	</root>
+	
+</configuration>  
