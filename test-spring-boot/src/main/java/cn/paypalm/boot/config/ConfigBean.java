@@ -1,4 +1,4 @@
-package cn.paypalm.config;
+package cn.paypalm.boot.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;

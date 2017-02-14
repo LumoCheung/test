@@ -1,0 +1,121 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>cn.paypalm</groupId>
+  <artifactId>test-hello-start-lib</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>jar</packaging>
+  
+  <properties>    
+		<java.version>1.8</java.version>
+  </properties>
+  
+  <!-- <build>
+		<finalName>${artifactId}-${version}</finalName>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+				</configuration>
+			</plugin>
+		</plugins>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>false</filtering>
+			</resource>
+		</resources>
+		<testResources>
+			<testResource>
+				<directory>src/test/resources</directory>
+				<filtering>false</filtering>
+			</testResource>
+		</testResources>
+	</build> -->
+
+  <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+    
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <scope>test</scope>
+      <version>4.11</version>
+    </dependency>
+    
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-autoconfigure</artifactId>
+        <version>1.3.0.M1</version>
+    </dependency>
+    
+  </dependencies>
+  
+  
+	<!-- 使用spring boot 正式版时，无需下面配置 -->	
+	<repositories>
+		    <repository>			    
+                <id>spring-snapshots</id>
+            	<name>Spring Snapshots</name>
+            	<url>https://repo.spring.io/snapshot</url>
+                <snapshots>
+                    <enabled>true</enabled>
+                </snapshots>
+		    </repository>
+		    <repository>			    
+                <id>spring-milestones</id>
+            	<name>Spring Milestones</name>
+            	<url>https://repo.spring.io/milestone</url>
+                <snapshots>
+                    <enabled>false</enabled>
+                </snapshots>
+		    </repository>
+	    </repositories>
+	    
+	    <pluginRepositories>
+            <pluginRepository>
+                <id>spring-snapshots</id>
+            	<name>Spring Snapshots</name>
+            	<url>https://repo.spring.io/snapshots</url>
+                <snapshots>
+                    <enabled>true</enabled>
+                </snapshots>
+             </pluginRepository>
+             <pluginRepository>			    
+                <id>spring-milestones</id>
+            	<name>Spring Milestones</name>
+            	<url>https://repo.spring.io/milestone</url>
+                <snapshots>
+                    <enabled>false</enabled>
+                </snapshots>
+		    </pluginRepository>
+        </pluginRepositories>
+	<!-- 下面的配置是干什么用的，不要问我，不知道。 -->
+    <!-- <repositories>
+        <repository>
+            <id>spring-releases</id>
+            <name>Spring Releases</name>
+            <url>https://repo.spring.io/libs-release</url>
+        </repository>
+    </repositories> 
+    <pluginRepositories>
+        <pluginRepository>
+            <id>spring-releases</id>
+            <name>Spring Releases</name>
+            <url>https://repo.spring.io/libs-release</url>
+        </pluginRepository>
+    </pluginRepositories> -->
+    <!-- 分割线 -->
+  
+</project>

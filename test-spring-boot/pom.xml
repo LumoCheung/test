@@ -35,6 +35,37 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		
+		<dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-redis</artifactId>
+            <!-- 目前不清楚因为什么导致boot中没有这个包的版本存在，暂时取了一个可以用的版本 -->
+			<version>1.4.3.RELEASE</version>
+        </dependency>
+        <!-- spring aop支持 -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-aop</artifactId>
+        </dependency>
+        <!-- <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-aspects</artifactId>
+        </dependency> -->
+        <!-- aspectj支持 -->
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjrt</artifactId>
+        </dependency>        
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+        </dependency>
+        <!-- 测试lib依赖 -->
+        <dependency>
+            <groupId>cn.paypalm</groupId>
+            <artifactId>test-hello-start-lib</artifactId>
+  			<version>0.0.1-SNAPSHOT</version>
+        </dependency>
 	</dependencies>
 
 	<build>

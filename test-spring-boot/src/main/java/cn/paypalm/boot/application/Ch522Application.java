@@ -1,15 +1,11 @@
-package cn.paypalm.application;
-
-import javax.annotation.Resource;
+package cn.paypalm.boot.application;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import cn.paypalm.config.ConfigBean;
+import cn.paypalm.boot.config.ConfigBean;
 
 /** 
  * <p> Description:  </p>

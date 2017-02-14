@@ -30,7 +30,7 @@ import redis.clients.jedis.JedisShardInfo;
  * 
  * </pre>
  */
-@SpringBootApplication
+//@SpringBootApplication
 public class Application {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(Application.class);
