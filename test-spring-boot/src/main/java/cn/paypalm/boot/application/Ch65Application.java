@@ -1,10 +1,6 @@
 package cn.paypalm.boot.application;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import cn.paypalm.lib.service.HelloService;
 
 /** 
  * <p> Description:  </p>
@@ -22,11 +18,11 @@ import cn.paypalm.lib.service.HelloService;
 @RestController
 //@SpringBootApplication
 public class Ch65Application {
-	@Autowired
+	/*@Autowired
 	HelloService helloService;
 	
 	@RequestMapping("/test65")
 	String index2(){
 		return helloService.sayHello();
-	}
+	}*/
 }

@@ -6,7 +6,7 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-@ComponentScan(basePackages = {"cn.paypalm.boot","cn.paypalm.lib"})
+@ComponentScan(basePackages = {"cn.paypalm.boot","cn.paypalm.web"})
 public class TestSpringBootApplication {
 
 	public static void main(String[] args) {
