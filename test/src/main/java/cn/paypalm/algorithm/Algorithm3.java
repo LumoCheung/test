@@ -55,24 +55,90 @@ A + --- + ------- = 10
 			}
 		}
 	}
-
-/** 
- * main
- * 方法描述: 
- * 逻辑描述: 
- * @param args
- * @since Ver 1.00
- */
-public static void main(String[] args) {
-	int[] num=new int[9];
-	int[] zhi=new int[9];
-	for(int i=0;i<9;i++){
-		num[i]=i+1;
-		zhi[i]=-1;
+	
+	public static void main1(){
+		int[] num=new int[9];
+		int[] zhi=new int[9];
+		for(int i=0;i<9;i++){
+			num[i]=i+1;
+			zhi[i]=-1;
+		}
+		new Algorithm3().huisu(num, 8, zhi);
+		System.out.println(s);
 	}
-	new Algorithm3().huisu(num, 8, zhi);
-	System.out.println(s);
+
+/**
+ * 抽签
+
+X星球要派出一个5人组成的观察团前往W星。
+其中：
+A国最多可以派出4人。
+B国最多可以派出2人。
+C国最多可以派出2人。
+D国最多可以派出1人。
+E国最多可以派出1人。
+F国最多可以派出3人。
+
+那么最终派往W星的观察团会有多少种国别的不同组合呢？
+
+下面的程序解决了这个问题。
+数组a[] 中既是每个国家可以派出的最多的名额。
+程序执行结果为：
+DEFFF
+CEFFF
+CDFFF
+CDEFF
+CCFFF
+CCEFF
+CCDFF
+CCDEF
+BEFFF
+BDFFF
+BDEFF
+BCFFF
+BCEFF
+BCDFF
+BCDEF
+....
+(以下省略，总共101行)
 	
+ */
+	static int ss=0;
+	public void f(int a[], int k, int m, char b[])
+	{
+		int i,j;
+		
+		if(k==6){ 
+//			b[5] = '\0';
+			if(m==0) {
+				System.out.print(new String(b, 0, 5)+"\n");
+				ss++;
+			}
+			return;
+		}
+		
+		for(i=0; i<=a[k]; i++){
+			for(j=0; j<i; j++) 
+				b[5-m+j] = (char) (k+'A');
+			f(a, k+1, m-j, b);  //填空位置
+		}
+	}
 	
-}
+	public static void main2() {
+		int[] a = {4,2,2,1,1,3};
+		char[] b=new char[1024];
+		new Algorithm3().f(a,0,5,b);	
+		System.out.println(ss);
+	}
+	
+	/** 
+	 * main
+	 * 方法描述: 
+	 * 逻辑描述: 
+	 * @param args
+	 * @since Ver 1.00
+	 */
+	public static void main(String[] args) {
+		
+	}
 }
