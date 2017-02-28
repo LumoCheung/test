@@ -2,9 +2,12 @@ package cn.paypalm.algorithm;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import org.apache.commons.io.FileUtils;
+import org.hamcrest.core.Is;
 
 /** 
  * <p> Description:  </p>
@@ -245,31 +248,38 @@ public class Algorithm2 {
 			
 		}
 		
-		public void huisu3(int[][] you,int x,Node[] chu){
-			if(x==chu.length){
+		public void huisu3(int[][] you,int n, int x, int y,Node[] chu){
+			if(n==chu.length){
 					if(guize(chu)){
 					s++;
 					System.out.println(Arrays.toString(chu));
 				}
 				return;
 			}
-			
-			for(int i=0;i<3;i++)
-			for(int j=0;j<4;j++){
+			//这种做法是全排列，数目是12*11*10*9*8=95 040，数据量过大，最好的做法是实际上是12*11*10*9*8/(5*4*3*2*1)=792
+			//大大减少guize()判断的次数
+			//做法是只取当前邮票后面的邮票
+			for(int i=x;i<3;i++){
+				int j=0;
+				if(x==i){
+					j=y;
+				}
+				for(;j<4;j++){
 				
 				//新做法：任意五张邮票先取出，取完之后判断，一次遍历，保证不重复取出
 				
-				if(you[i][j]>-1){
+				if(you[i][j]>-1&&!(i<x&&j<y)){
 					Node node=new Node();
 					node.r=i;
 					node.c=j;
-					chu[x]=node;
+					chu[n]=node;
 					you[i][j]=-1;
-					huisu3(you, x+1, chu);
-					chu[x]=null;
+					huisu3(you, n+1, i, j, chu);
+					chu[n]=null;
 					you[i][j]=0;//还原
 				}
-				
+
+			}
 				/*XXX 回溯失败 2017年2月24日19:05:42
 				if(you[i][j]>-1&&guize(you, x,i,j ,chu)){
 					Node node=new Node();
@@ -283,19 +293,83 @@ public class Algorithm2 {
 				}*/
 			}
 		}
+		
+		private class NodeChu{
+//			int i;
+			boolean is;
+			List<Integer> nexts=new ArrayList<Integer>();
+		}
+		
 		private boolean guize(Node[] chu){
-			int ss=0;
-			for(int i=0;i<chu.length;i++){
-				for(int j=0;j<chu.length;j++){
-					if(Math.abs(chu[i].r-chu[j].r)<2&&chu[i].c==chu[j].c){
-						ss++;
-					}else if(Math.abs(chu[i].c-chu[j].c)<2&&chu[i].r==chu[j].r){
+			
+			// 最难的是判定五张邮票相连，最开始的想法是递归判断，时间消耗太严重
+			NodeChu[] nodes=new NodeChu[5];
+			for(int i=0;i<5;i++){
+				nodes[i]=new NodeChu();
+			}
+			//1. 构建邻接链表，擂台法
+			for(int i=0;i<chu.length-1;i++){
+				for(int j=i+1;j<chu.length;j++){
+					if((Math.abs(chu[i].r-chu[j].r)<2&&chu[i].c==chu[j].c)
+							||(Math.abs(chu[i].c-chu[j].c)<2&&chu[i].r==chu[j].r)){
+						nodes[i].nexts.add(j);
+					}
+				}
+			}
+			
+			//2. 伪遍历邻接链表(改造)
+//			int ss=0;//长度
+			boolean is=is(nodes);
+
+			if(!is){
+				is= is(nodes);
+			}			
+			/*if(chu[0].r==0&&chu[0].c==0&&chu[1].r==0&&chu[1].c==2){
+				System.out.println(Arrays.toString(chu));
+				for(int i=0;i<nodes.length;i++){
+					System.out.println(nodes[i].is+"/"+nodes[i].nexts);
+				}
+			}*/
+			return is;
+		}
+		
+		public boolean is(NodeChu[] nodes){
+			nodes[0].is=true;
+			for(int i=0;i<nodes.length;i++){
+				if(nodes[i].nexts.size()>0){
+					for(Integer e:nodes[i].nexts){
+						if(nodes[e].is&&!nodes[i].is){
+							nodes[i].is=true;
+						}else if(!nodes[e].is&&nodes[i].is){
+							nodes[e].is=true;
+						}
+					}
+				}
+			}
+			boolean is=true;
+			for(int i=0;i<nodes.length;i++){
+				if(!nodes[i].is){
+					is=false;
+					break;
+				}
+			}
+			return is;
+		}
+		//XXX 回溯判断是否有效失败，2017年2月28日19:21:12
+		public int shu(Node[] chu,int ss){
+			
+//			if()
+			
+			for(int i=0;i<chu.length-1;i++){
+				for(int j=i+1;j<chu.length;j++){
+					if((Math.abs(chu[i].r-chu[j].r)<2&&chu[i].c==chu[j].c)
+							||(Math.abs(chu[i].c-chu[j].c)<2&&chu[i].r==chu[j].r)){
 						ss++;
 					}
 				}
 			}
-			if(ss>=8) return true;
-			return false;
+			
+			return ss;
 		}
 		/**
 		 * 失败：2017年2月24日18:28:52
@@ -365,7 +439,7 @@ public class Algorithm2 {
 		}*/
 		int[][] you=new int[3][4];
 		Node[] chu=new Node[5];
-		new Algorithm2().huisu3(you, 0, chu);
+		new Algorithm2().huisu3(you, 0, 0, 0, chu);
 		System.out.println(s);
 
 		/**XXX 抛弃原因，重复次数计算失败
