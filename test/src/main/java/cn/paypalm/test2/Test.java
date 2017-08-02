@@ -20,9 +20,12 @@ public class Test {
 	}
 	
 	public static void main(String[] args){
-		String str="^[\\w\\-]{0,64}$";
+//		String str="^[\\w\\-]{0,64}$";
+//		
+//		System.out.println("0.3".matches(str));
 		
-		System.out.println("0.3".matches(str));
+		Integer string=300;
+		System.out.println(String.format("%06d", string));
 	}
 
 }
