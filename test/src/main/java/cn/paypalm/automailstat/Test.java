@@ -1,4 +1,4 @@
-package cn.paypalm.test;
+package cn.paypalm.automailstat;
 
 /** 
  * <p> Description:  </p>

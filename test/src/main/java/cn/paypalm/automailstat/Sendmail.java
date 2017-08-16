@@ -1,4 +1,4 @@
-package cn.paypalm.test;
+package cn.paypalm.automailstat;
 
 import java.security.Security;
 import java.text.SimpleDateFormat;
