@@ -31,8 +31,14 @@ import javax.mail.internet.MimeMessage;
 public class Sendmail {
 
     /**
-     * @param args
-     * @throws Exception 
+     * 
+     * send
+     * 方法描述: 
+     * 逻辑描述: 
+     * @param date 统计邮件的日期：yyyy-MM-dd
+     * @param flag 强制发送标识
+     * @throws Exception
+     * @since Ver 1.00
      */
     public static void send(String date,String flag) throws Exception {    
     	Security.addProvider(new com.sun.net.ssl.internal.ssl.Provider());
@@ -66,7 +72,6 @@ public class Sendmail {
             }});
         //开启Session的debug模式，这样就可以查看到程序发送Email的运行状态
         session.setDebug(false);
-	
 
 	   SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
 	   if("".equals(date)){
@@ -75,24 +80,39 @@ public class Sendmail {
 		   calendar.add(Calendar.DATE, -1);
 		   date=sdf.format(calendar.getTime());
 	   }
-	   String text=ReciveOneMail.receive(date,session,flag);
-       // -- Create a new message --
-	   Message msg = new MimeMessage(session);
-	   // -- Set the FROM and TO fields --
-	   msg.setFrom(new InternetAddress(MerConfig.getValueAt("username")));
-	   msg.setSubject(date+"预警邮件汇总");
-	   if(text==null){
+	   try {
+		   String text=ReciveOneMail.receive(date,session,flag);
+	       // -- Create a new message --
+		   Message msg = new MimeMessage(session);
+		   // -- Set the FROM and TO fields --
+		   msg.setFrom(new InternetAddress(MerConfig.getValueAt("username")));
+		   msg.setSubject(date+"预警邮件汇总");
+		   if(text==null){
+			   msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(MerConfig.getValueAt("username"),false));
+			   msg.setText("获取的预警邮件数为0，请检查预警邮件，如有误，使用手动发送方式发送。");
+		   }
+		   else{
+			   msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(MerConfig.getValueAt("senders"),false));
+			   msg.setText(text);
+		   }
+		   System.out.println(text);
+		   msg.setSentDate(new Date());
+		   Transport.send(msg);
+		   System.out.println("Message sent.");
+	   }catch (Exception e) {		   
+		   //错误报警邮件
+		   // -- Create a new message --
+		   Message msg = new MimeMessage(session);
+		   // -- Set the FROM and TO fields --
+		   msg.setFrom(new InternetAddress(MerConfig.getValueAt("username"))); 
 		   msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(MerConfig.getValueAt("username"),false));
-		   msg.setText("获取的预警邮件数为0，请检查预警邮件，如有误，使用手动发送方式发送。");
+		   msg.setSubject(date+"预警邮件汇总：错误");
+		   msg.setText(e.getMessage());
+		   throw e;
 	   }
-	   else{
-		   msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(MerConfig.getValueAt("senders"),false));
-		   msg.setText(text);
-	   }
-	   System.out.println(text);
-	   msg.setSentDate(new Date());
-	   Transport.send(msg);
-
-	   System.out.println("Message sent.");
+    }
+    
+    public static void sendMsg(String title,String content) {
+    	
     }
 }

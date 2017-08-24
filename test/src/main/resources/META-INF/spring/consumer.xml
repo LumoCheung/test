@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://code.alibabatech.com/schema/dubbo
+        http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+  <!-- 生成远程服务代理，可以和本地bean一样使用echoService -->
+  <!-- <dubbo:reference id="orderServiceLogic" interface="cn.paypalm.trans.logic.OrderServiceLogic" group="Merak-wechat" /> -->
+  <!-- <dubbo:reference id="all" interface="*" group="*" version="*" /> 订阅支持所有的版本和分组匹配，但是接口不支持全部获取-->
+  <dubbo:reference id="consumer" interface="cn.paypalm.dubbo.api.TestService"/> 
+</beans>
