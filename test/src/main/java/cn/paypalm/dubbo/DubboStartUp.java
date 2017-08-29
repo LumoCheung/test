@@ -1,10 +1,5 @@
 package cn.paypalm.dubbo;
 
-import static org.hamcrest.CoreMatchers.nullValue;
-
-import cn.paypalm.dubbo.api.TestService;
-import cn.paypalm.util.UContext;
-
 /** 
  * <p> Description:  </p>
  * @Author zhangzilu
@@ -22,8 +17,8 @@ public class DubboStartUp {
 	
 	public static void main(String[] args) throws InterruptedException {
 		
-		//com.alibaba.dubbo.container.Main.main(args);
-		new Thread(new DubboStartUp().new Start()).start();
+		com.alibaba.dubbo.container.Main.main(args);
+		/*new Thread(new DubboStartUp().new Start()).start();
 		
 		while(true) {
 			Thread.sleep(10000);
@@ -40,7 +35,7 @@ public class DubboStartUp {
 			
 			((TestService)test).Test("你说离开我知道很简单");
 			break;
-		}
+		}*/
 	}
 	
 	public class Start implements Runnable{

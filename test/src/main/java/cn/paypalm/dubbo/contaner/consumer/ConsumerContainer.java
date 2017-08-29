@@ -2,12 +2,11 @@ package cn.paypalm.dubbo.contaner.consumer;
 
 import com.alibaba.dubbo.container.Container;
 
-import cn.paypalm.automailstat.Test;
 import cn.paypalm.dubbo.api.TestService;
 import cn.paypalm.util.UContext;
 
 /** 
- * <p> Description:  </p>
+ * <p> Description:  还没有测试：2017年8月24日19:11:02</p>
  * @Author zhangzilu
  * @Date [2017年8月24日] 
  * @Version V1.0 
@@ -27,9 +26,8 @@ public class ConsumerContainer implements Container{
 	 */ 
 	@Override
 	public void start() {
-		TestService test=UContext.getContext().getBean("consumer",TestService.class);
 		
-		new Thread(new Consumer(test)).start();
+		new Thread(new Consumer()).start();
 		
 	}
 
@@ -44,18 +42,32 @@ public class ConsumerContainer implements Container{
 	}
 	
 	protected class Consumer implements Runnable{
-		private TestService testService;
-
-		public Consumer(TestService testService) {
-			this.testService=testService;
-		}
 		/**
 		 * <p>Description:</p>
 		 * @see java.lang.Runnable#run() 
 		 */ 
 		@Override
 		public void run() {
-			testService.Test("你说离开我知道很简单");
+			while(true) {
+				try {
+					Thread.sleep(10000);
+				} catch (InterruptedException e1) {
+					e1.printStackTrace();
+				}
+				Object test=null;
+				try {
+					test=UContext.getContext().getBean("consumer");
+				}catch (Exception e) {
+					continue;
+				}
+				
+				if(test==null) {
+					continue;
+				}
+				
+				((TestService)test).Test("你说离开我知道很简单");
+				break;
+			}	
 		}
 		
 	}

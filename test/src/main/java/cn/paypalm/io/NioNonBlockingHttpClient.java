@@ -46,7 +46,7 @@ public class NioNonBlockingHttpClient {
         NioNonBlockingHttpClient client = new NioNonBlockingHttpClient();
 
         for (String host: HOSTS) {
-
+        	System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
             client.request(host, PORT);
 
         }
