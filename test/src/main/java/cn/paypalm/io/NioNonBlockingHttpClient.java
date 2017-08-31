@@ -25,8 +25,8 @@ import java.util.Set;
  * </pre>
  */
 public class NioNonBlockingHttpClient {
-	private static Selector selector;
-    private Charset charset = Charset.forName("utf8");
+	public static Selector selector;
+    private static Charset charset = Charset.forName("utf8");
     
     private static String[] HOSTS = {"www.baidu.com", "www.weibo.com", "www.sina.com"};
 
@@ -45,17 +45,19 @@ public class NioNonBlockingHttpClient {
 
         NioNonBlockingHttpClient client = new NioNonBlockingHttpClient();
 
-        for (String host: HOSTS) {
+        /*for (String host: HOSTS) {
         	System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
             client.request(host, PORT);
 
         }
 
-        client.select();
-
+        client.select();*/
+        
+        request("localhost", 8022);
+        select();
     }
 
-    public void request(String host, int port) throws IOException {
+    public static void request(String host, int port) throws IOException {
         SocketChannel socketChannel = SocketChannel.open();
         socketChannel.socket().setSoTimeout(5000);
         SocketAddress remote = new InetSocketAddress(host, port);
@@ -67,7 +69,7 @@ public class NioNonBlockingHttpClient {
                         | SelectionKey.OP_WRITE);
     }
 
-    public void select() throws IOException {
+    public static void select() throws IOException {
         while (selector.select(500) > 0){
             Set<SelectionKey> keys = selector.selectedKeys();
 
@@ -91,7 +93,7 @@ public class NioNonBlockingHttpClient {
         }
     }
 
-    private void connect(SelectionKey key) throws IOException {
+    public static void connect(SelectionKey key) throws IOException {
         SocketChannel channel = (SocketChannel) key.channel();
         channel.finishConnect();
         InetSocketAddress remote = (InetSocketAddress) channel.socket().getRemoteSocketAddress();
@@ -100,7 +102,7 @@ public class NioNonBlockingHttpClient {
         System.out.println(String.format("访问地址: %s:%s 连接成功!", host, port));
     }
 
-    private void write(SelectionKey key) throws IOException {
+    public static void write(SelectionKey key) throws IOException {
         SocketChannel channel = (SocketChannel) key.channel();
         InetSocketAddress remote = (InetSocketAddress) channel.socket().getRemoteSocketAddress();
         String host = remote.getHostName();
@@ -112,7 +114,7 @@ public class NioNonBlockingHttpClient {
         key.interestOps(SelectionKey.OP_READ);
     }
 
-    private void receive(SelectionKey key) throws IOException {
+    public static void receive(SelectionKey key) throws IOException {
         SocketChannel channel = (SocketChannel) key.channel();
         ByteBuffer buffer = ByteBuffer.allocate(1024);
         channel.read(buffer);
