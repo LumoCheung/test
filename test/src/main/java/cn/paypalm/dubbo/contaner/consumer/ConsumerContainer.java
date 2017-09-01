@@ -2,7 +2,10 @@ package cn.paypalm.dubbo.contaner.consumer;
 
 import com.alibaba.dubbo.container.Container;
 
+import cn.paypalm.dubbo.DubboServiceCacheService;
+import cn.paypalm.dubbo.api.TestMockService;
 import cn.paypalm.dubbo.api.TestService;
+import cn.paypalm.dubbo.api.TestStubService;
 import cn.paypalm.util.UContext;
 
 /** 
@@ -65,7 +68,34 @@ public class ConsumerContainer implements Container{
 					continue;
 				}
 				
-				((TestService)test).Test("你说离开我知道很简单");
+				try {
+					((TestService)test).Test("我在门后假装你人还没走");
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				//stub 测试				
+				test=UContext.getContext().getBean("consumerStub");				
+				((TestStubService)test).test("夜半清醒的烛火不忍苛责我");//篱笆外的古道我牵着你走过
+				
+				//mock测试
+				test=UContext.getContext().getBean("consumerMock");				
+				((TestMockService)test).test("你走之后酒暖回忆思念瘦");//犹记得那年我们还很年幼
+				
+				test=UContext.getContext().getBean("consumerMock2");				
+				((TestMockService)test).test("花开就一次成熟我却错过");//水向东流时间怎么偷
+				
+				//ReferenceConfig 缓存				
+				TestService t=DubboServiceCacheService.getService();
+				try {
+					t.Test("岁月在墙上剥落看见小时候");//荒烟蔓草的年头 就连分手都很沉默
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				
 				break;
 			}	
 		}

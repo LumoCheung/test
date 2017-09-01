@@ -9,5 +9,13 @@
   <!-- 生成远程服务代理，可以和本地bean一样使用echoService -->
   <!-- <dubbo:reference id="orderServiceLogic" interface="cn.paypalm.trans.logic.OrderServiceLogic" group="Merak-wechat" /> -->
   <!-- <dubbo:reference id="all" interface="*" group="*" version="*" /> 订阅支持所有的版本和分组匹配，但是接口不支持全部获取-->
-  <dubbo:reference id="consumer" interface="cn.paypalm.dubbo.api.TestService"/> 
+  <dubbo:reference id="consumer" interface="cn.paypalm.dubbo.api.TestService" stub="true"/> 
+  <dubbo:reference id="consumerStub" interface="cn.paypalm.dubbo.api.TestStubService" stub="cn.paypalm.dubbo.stub.TestStubServiceStub"/>
+  <!-- stub（本地存根）解释：1.stub设置属性为true时（默认为false）,默认寻找当前目录接口名后面带Stub的类，找不到会报异常
+  							 2.stub设置为具体类名时，就去寻找配置的类名目录，找不到也会报异常 -->
+  							 
+  <!-- mock（本地伪装）只出现在调用出现rpc异常时，用于服务降级 -->							 
+  <dubbo:reference id="consumerMock" interface="cn.paypalm.dubbo.api.TestMockService" mock="true"/>   
+  <dubbo:reference id="consumerMock2" interface="cn.paypalm.dubbo.api.TestMockService" mock="cn.paypalm.dubbo.mock.TestMockServiceMock"/> 
+  
 </beans>

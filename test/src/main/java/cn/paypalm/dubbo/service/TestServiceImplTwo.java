@@ -20,16 +20,17 @@ import cn.paypalm.dubbo.api.TestStubService;
  * 
  * </pre>
  */
-@Service("testService")
-public class TestServiceImpl implements TestService,TestStubService{
-	private static final Logger log = LogManager.getLogger(TestServiceImpl.class);
+@Service("testServiceTwo")
+public class TestServiceImplTwo implements TestService,TestStubService{
+	private static final Logger log = LogManager.getLogger(TestServiceImplTwo.class);
 	/**
 	 * <p>Description:</p>
 	 * @see cn.paypalm.dubbo.api.TestService#Test(java.lang.String) 
 	 */ 
 	@Override
 	public void Test(String demo) {
-			System.out.println(demo);
+		log.debug("谁在用琵琶弹奏一曲东风破");
+		System.out.println(demo);
 	}
 
 	/**
@@ -38,7 +39,7 @@ public class TestServiceImpl implements TestService,TestStubService{
 	 */ 
 	@Override
 	public void test(String name) {
-		log.debug("枫叶将故事染色结局我看透");
+		log.debug("犹记得那年我们都还很年幼");
 		System.out.println(name);
 	}
 
