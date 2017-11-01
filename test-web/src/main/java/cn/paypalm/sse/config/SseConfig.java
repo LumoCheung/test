@@ -23,9 +23,9 @@ import org.springframework.web.servlet.view.JstlView;
  * 
  * </pre>
  */
-@Configuration
-@EnableWebMvc
-@ComponentScan("cn.paypalm.sse")
+//@Configuration
+//@EnableWebMvc
+//@ComponentScan("cn.paypalm.sse")
 public class SseConfig extends WebMvcConfigurerAdapter {
 	@Bean
 	public InternalResourceViewResolver viewResolver(){

@@ -5,9 +5,11 @@ import javax.annotation.Resource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
@@ -51,7 +53,8 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry){
 		//addResourceLocations 指的是文件放置的目录，addResourceHandler 指的是文件暴露的目录
-		registry.addResourceHandler("/assets/**").addResourceLocations("classpath:/assets/");
+//		registry.addResourceHandler("/assets/**").addResourceLocations("classpath:/assets/");
+		registry.addResourceHandler("/**").addResourceLocations("/");
 	}
 	
 	/**
@@ -62,5 +65,18 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
 	@Override
 	public void addInterceptors(InterceptorRegistry registry){
 		registry.addInterceptor(demoInterceptor);
+	}
+	
+	/**
+	 * 
+	 * <p>Description:</p>
+	 * @see org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter#addViewControllers(org.springframework.web.servlet.config.annotation.ViewControllerRegistry)
+	 */
+	@Override
+	public void addViewControllers(ViewControllerRegistry registry) {
+		registry.addViewController("/").setViewName("/index");
+		registry.addViewController("/index").setViewName("/index");
+//		registry.addViewController("/404.html").setStatusCode(HttpStatus.NOT_FOUND);
+		registry.addStatusController("/404.html", HttpStatus.NOT_FOUND);
 	}
 }

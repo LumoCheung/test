@@ -1,7 +1,10 @@
 package cn.paypalm.web;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /** 
  * <p> Description:  </p>
@@ -22,4 +25,12 @@ public class WebController {
 	public String hello(){
 		return "index";
 	}
+	
+	@ResponseBody
+	@RequestMapping(value="/data",produces="text/html;charset=utf-8")
+	public String get(HttpServletRequest request) {
+		//汉字测试
+		return "汉字测试";
+	}
+	
 }

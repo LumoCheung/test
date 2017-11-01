@@ -1,8 +1,15 @@
 package cn.paypalm.dubbo.contaner.consumer;
 
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+
 import com.alibaba.dubbo.container.Container;
+import com.alibaba.dubbo.rpc.RpcConstants;
+import com.alibaba.dubbo.rpc.RpcContext;
+import com.alibaba.dubbo.rpc.service.EchoService;
 
 import cn.paypalm.dubbo.DubboServiceCacheService;
+import cn.paypalm.dubbo.api.TestCallBackService;
 import cn.paypalm.dubbo.api.TestMockService;
 import cn.paypalm.dubbo.api.TestService;
 import cn.paypalm.dubbo.api.TestStubService;
@@ -95,6 +102,23 @@ public class ConsumerContainer implements Container{
 					e.printStackTrace();
 				}
 				
+				//回声测试
+				Object s=((EchoService)t).$echo("ok");
+				assert("ok".equals(s));
+				
+				//事件通知，异步调用
+				test=UContext.getContext().getBean("consumerCall");				
+				System.out.println(((TestCallBackService)test).call("谁在用琵琶弹奏一曲东风破"));//犹记得那年我们还很年幼
+				Future<String> f=RpcContext.getContext().getFuture();//返回为void的会直接报错
+				try {
+					f.get();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (ExecutionException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				
 				break;
 			}	

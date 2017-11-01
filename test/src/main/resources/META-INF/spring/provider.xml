@@ -13,6 +13,7 @@
   <dubbo:service interface="cn.paypalm.dubbo.api.TestService" ref="testService"  />
   <dubbo:service interface="cn.paypalm.dubbo.api.TestStubService" ref="testService"  />
   <dubbo:service interface="cn.paypalm.dubbo.api.TestService" ref="testServiceTwo" group="two" />
+  <dubbo:service interface="cn.paypalm.dubbo.api.TestCallBackService" ref="testService"/>
 
   <!-- 和本地bean一样实现服务 -->
   <!--<vo id="echoService" class="cn.paypalm.pptran_new.provider.EchoServiceImpl" />-->
