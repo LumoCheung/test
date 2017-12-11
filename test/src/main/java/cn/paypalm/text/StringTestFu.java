@@ -1,16 +1,24 @@
 package cn.paypalm.text;
 
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
 import java.util.Arrays;
 
 public class StringTestFu {
 	
 	public static void stringFu(String string) throws UnsupportedEncodingException {
-		string="ºº×Ö²âÊÔÂ«»¨";
+		string="ï¿½ï¿½ï¿½Ö²ï¿½ï¿½ï¿½Â«ï¿½ï¿½";
 
 		System.out.println(Arrays.toString(string.getBytes()));
 		System.out.println(Arrays.toString(string.getBytes("gbk")));
 		System.out.println(Arrays.toString(string.getBytes("utf-8")));
+		System.out.println("//"+Charset.defaultCharset().name());
+		System.out.println(System.getProperty("file.encoding"));
+	}
+
+	public static void main(String[] args) throws UnsupportedEncodingException {
+
+		StringTestFu.stringFu(null);
 	}
 
 }
