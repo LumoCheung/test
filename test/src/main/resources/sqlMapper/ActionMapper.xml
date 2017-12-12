@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.paypalm.transaction.dao.IActionDao">
+    
+    <insert id="insertNotifySuccessMessage" parameterType="cn.paypalm.transaction.bean.ActionBean">
+    	insert into m_action(actionsn,actiontype,actiontime,merid,orderno,
+    	<if test= "tranAmt != 0">tranamt,</if >
+    	rspcode,rspdesc,isagreement,ip,msgid,issuccess,isrefund) 
+    	values(seq_default.nextval,#{actionType},#{actionTime},#{merId},#{orderNo},
+    	<if test= "tranAmt != 0">#{tranAmt},</if >    	
+    	#{rspCode},#{rspDesc},0,#{ip},#{msgId},#{isSuccess},#{isRefund})
+    </insert>    
+        
+    <select id="selectActionBean" resultType="cn.paypalm.transaction.bean.ActionBean" parameterType="long">
+    	select * from m_action where orderno=#{orderNo} and rownum=1
+    </select>
+    
+    <update id="updateIsAgreeMentByOrderno" parameterType="cn.paypalm.transaction.bean.ActionBean">
+    	update m_action set isagreement=#{isAgreeMent} where actionsn=#{actionSn} and isagreement=#{oldIsAgreeMent}
+    </update>
+
+	<insert id="insertMysql" parameterType="cn.paypalm.transaction.bean.ActionBean">
+		insert into m_action(actiontype,actiontime,merid,orderno,
+		<if test= "tranAmt != 0">tranamt,</if >
+		rspcode,rspdesc,isagreement,ip,msgid,issuccess,isrefund)
+		values(#{actionType},#{actionTime},#{merId},#{orderNo},
+		<if test= "tranAmt != 0">#{tranAmt},</if >
+		#{rspCode},#{rspDesc},0,#{ip},#{msgId},#{isSuccess},#{isRefund})
+	</insert>
+
+	<select id="selectMysql" resultType="cn.paypalm.transaction.bean.ActionBean" parameterType="long">
+		select * from m_action where orderno=#{orderNo} limit 1,1
+	</select>
+</mapper>
