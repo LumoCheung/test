@@ -337,7 +337,7 @@ public class ReciveOneMail {
     public static String receive(String date,Session session,String flag) throws Exception {
         Store store=session.getStore();
         store.connect();  
-        Folder folder = store.getFolder("INBOX");  
+        Folder folder = store.getFolder("INBOX");  //必须是INBOX，真是服了，其他都会报错
         folder.open(Folder.READ_ONLY);
         SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
         Date begin=sdf.parse(date);

@@ -71,7 +71,8 @@ public class Sendmail {
                 return new PasswordAuthentication(MerConfig.getValueAt("username"), MerConfig.getValueAt("password"));
             }});
         //开启Session的debug模式，这样就可以查看到程序发送Email的运行状态
-        session.setDebug(false);
+//        session.setDebug(false);
+        session.setDebug(true);
 
 	   SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
 	   if("".equals(date)){
@@ -97,7 +98,7 @@ public class Sendmail {
 		   }
 		   System.out.println(text);
 		   msg.setSentDate(new Date());
-		   Transport.send(msg);
+//		   Transport.send(msg);
 		   System.out.println("Message sent.");
 	   }catch (Exception e) {		   
 		   //错误报警邮件

@@ -29,6 +29,7 @@
 	</insert>
 
 	<select id="selectMysql" resultType="cn.paypalm.transaction.bean.ActionBean" parameterType="long">
-		select * from m_action where orderno=#{orderNo} limit 1,1
+		select * from m_action where orderno=#{orderNo} limit 0,1
+		<!--limit从0行开始-->
 	</select>
 </mapper>

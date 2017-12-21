@@ -82,6 +82,9 @@ public class TransactionService {
          */
         while (actionDao.updateIsAgreeMentByOrderno(action)==0){
             //oracle 更新0行，锁的也是0行
+
+            //跟隔离级别有关系，当是repeatable read级别时，更新0行，但是使用索引的行数都会被锁
+            //当是read committed时，只会锁具体更新的行数
             if(i==1){
                 throw new RuntimeException("超时");
             }
