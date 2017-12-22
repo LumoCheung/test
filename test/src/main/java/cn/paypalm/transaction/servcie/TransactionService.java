@@ -59,7 +59,15 @@ public class TransactionService {
         return actionDao.selectMysql(orderNo);
     }
 
+    @Transactional(propagation = Propagation.REQUIRED,rollbackFor = Exception.class)
     public void insert(ActionBean bean){
+        //测试事务调用非事务方法是否会回滚
+        insertNei(bean);
+        throw new RuntimeException("测试回滚");
+    }
+
+    private void insertNei(ActionBean bean){
+
 //        actionDao.insertNotifySuccessMessage(bean);
         actionDao.insertMysql(bean);
     }
@@ -70,7 +78,6 @@ public class TransactionService {
     @Transactional(propagation = Propagation.REQUIRED,rollbackFor = Exception.class)
     public void update(ActionBean bean){
         ActionBean action = select(bean.getOrderNo());
-
         if(action==null)
             throw new RuntimeException("操作异常");
         action.setOldIsAgreeMent(action.getIsAgreeMent());
@@ -83,7 +90,8 @@ public class TransactionService {
         while (actionDao.updateIsAgreeMentByOrderno(action)==0){
             //oracle 更新0行，锁的也是0行
 
-            //跟隔离级别有关系，当是repeatable read级别时，更新0行，但是使用索引的行数都会被锁
+            //跟隔离级别有关系，当是repeatable read级别时，更新0行，但是使用索引的行数都会被锁（间隙锁）
+            //InnoDB除了通过范围条件加锁时使用间隙锁外，如果使用相等条件请求给一个不存在的记录加锁，InnoDB也会使用间隙锁(可重复读隔离级别)
             //当是read committed时，只会锁具体更新的行数
             if(i==1){
                 throw new RuntimeException("超时");

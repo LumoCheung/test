@@ -54,8 +54,8 @@ public class TestTransaction {
 		System.out.println(bean);
 
 		TransactionService service=context.getBean("transactionService", TransactionService.class);
-		//初始化
-//		service.insert(bean);
+		//初始化-事务调用非事务
+		service.insert(bean);
         //传播机制
 //		service.Update(bean);
 
@@ -63,7 +63,7 @@ public class TestTransaction {
 //        service.update(bean);
 
         //无事务方法调用有事务方法
-        service.updateA(bean);
+//        service.updateA(bean);
 	}
 
 }
