@@ -14,6 +14,3 @@ out
  
 bin/
 gen/
-
-*.mgc
-*.mgi

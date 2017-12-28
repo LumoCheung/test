@@ -11,10 +11,13 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.handler.SimpleMappingExceptionResolver;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
 import cn.paypalm.web.interceptor.DemoInterceptor;
+
+import java.util.Properties;
 
 /** 
  * <p> Description:  </p>
@@ -40,6 +43,24 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
 		viewResolver.setSuffix(".jsp");
 		viewResolver.setViewClass(JstlView.class);
 		return viewResolver;
+	}
+
+//	@Bean
+	/**
+	 * 如果是用户请求了一个不存在的页面，没有对应的@RequestMapping，此时Spring的DispatcherServlet就会处理掉返回404，不会进入任何一个controller
+	 * 这个问题暂时无法解决//2017年12月28日15:42:05
+	 */
+	public SimpleMappingExceptionResolver exceptionResolver() {
+		SimpleMappingExceptionResolver exceptionResolver = new SimpleMappingExceptionResolver();
+		Properties exceptionMappings = new Properties();
+		exceptionMappings.put("java.lang.Exception", "500");
+		exceptionMappings.put("java.lang.RuntimeException", "500");
+		exceptionResolver.setExceptionMappings(exceptionMappings);
+		Properties statusCodes = new Properties();
+		statusCodes.put("404", "404");
+		statusCodes.put("500", "500");
+		exceptionResolver.setStatusCodes(statusCodes);
+		return exceptionResolver;
 	}
 	
 	@Resource
@@ -76,7 +97,8 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
 	public void addViewControllers(ViewControllerRegistry registry) {
 		registry.addViewController("/").setViewName("/index");
 		registry.addViewController("/index").setViewName("/index");
+		//这里不是配置404页面，而是直接映射某个url为直接状态异常
 //		registry.addViewController("/404.html").setStatusCode(HttpStatus.NOT_FOUND);
-		registry.addStatusController("/404.html", HttpStatus.NOT_FOUND);
+		registry.addStatusController("/404", HttpStatus.FORBIDDEN);
 	}
 }

@@ -1,10 +1,18 @@
 package cn.paypalm.web;
 
-import javax.servlet.http.HttpServletRequest;
-
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.FileUploadException;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.util.Iterator;
+import java.util.List;
 
 /** 
  * <p> Description:  </p>
@@ -20,6 +28,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * </pre>
  */
 @Controller
+@RequestMapping(("/index"))
 public class WebController {
 	@RequestMapping("/index")
 	public String hello(){
@@ -32,5 +41,6 @@ public class WebController {
 		//汉字测试
 		return "汉字测试";
 	}
-	
+
+
 }
