@@ -70,7 +70,7 @@ public class UploadController {
                         //<input type="text" name="content">
                         String name = item.getFieldName();//相当于input的name属性
                         String value = item.getString();//input的value属性
-                        System.out.println("属性:" + name + " 属性值:" + value);
+                        log.debug("属性:" + name + " 属性值:" + value);
                     }
                     //如果是上传文件
                     else {
@@ -86,10 +86,10 @@ public class UploadController {
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
-                        //给请求页面返回响应
-                        return "success";
                     }
                 }
+                //给请求页面返回响应
+                return "success";
             }
         }
         return "failed";

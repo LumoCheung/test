@@ -42,6 +42,7 @@ public class MultipartTest {
             MultipartEntityBuilder multipartEntity = MultipartEntityBuilder.create();
             multipartEntity.addPart(postFile.getName(), fundFileBin).setMode(HttpMultipartMode.RFC6532);//相当于<input type="file" name="media"/>
             multipartEntity.addBinaryBody(postFile.getName(),new FileInputStream(postFile),ContentType.MULTIPART_FORM_DATA,postFile.getName()).setMode(HttpMultipartMode.RFC6532);
+//            multipartEntity.addBinaryBody(postFile.getName(),new FileInputStream(postFile),ContentType.MULTIPART_FORM_DATA,postFile.getName()).setMode(HttpMultipartMode.RFC6532);
             //设计文件以外的参数
             Set<String> keySet = postParam.keySet();
             for (String key : keySet) {
