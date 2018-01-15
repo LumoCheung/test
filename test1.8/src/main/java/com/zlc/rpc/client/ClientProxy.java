@@ -14,7 +14,7 @@ public class ClientProxy implements InvocationHandler {
         try (
                 Socket socket = new Socket(ClientStub.getHost(), ClientStub.getPort());
 
-                OutputStream outputStream = pwdsocket.getOutputStream();
+                OutputStream outputStream = socket.getOutputStream();
                 ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
 
                 InputStream inputStream = socket.getInputStream();
