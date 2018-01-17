@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * A ffmpeg process wrapper.
@@ -99,6 +100,8 @@ class FFMPEGExecutor {
 		for (int i = 0; i < argsSize; i++) {
 			cmd[i + 1] = (String) args.get(i);
 		}
+		//打印 命令执行的属性
+		System.out.println(Arrays.toString(cmd));
 		Runtime runtime = Runtime.getRuntime();
 		ffmpeg = runtime.exec(cmd);
 		ffmpegKiller = new ProcessKiller(ffmpeg);

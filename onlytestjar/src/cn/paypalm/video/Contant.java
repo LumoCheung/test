@@ -6,6 +6,7 @@ package cn.paypalm.video;
  **/
 public class Contant {
 
+//    public static final String ppmpgePath="/Users/zlc/Downloads/ffmpeg";
     public static final String ppmpgePath="/Users/zlc/tools/ffmpeg";
 
 //    public static final String ppmpgePath="D:\\\\Java\\ffmpeg-3.4.1\\bin\\ffmpeg.exe";

@@ -674,7 +674,7 @@ public class Encoder {
 		if (info == null) {
 			throw new InputFormatException();
 		}
-		System.out.println("打印info信息"+info);
+//		System.out.println("打印info信息"+info);
 		return info;
 	}
 
@@ -843,6 +843,11 @@ public class Encoder {
 		ffmpeg.addArgument(formatAttribute);
 		ffmpeg.addArgument("-y");
 		ffmpeg.addArgument(target.getAbsolutePath());
+
+		//超级激进的做法，只打印错误日志
+		ffmpeg.addArgument("-v");
+		ffmpeg.addArgument("error");
+
 		try {
 			ffmpeg.execute();
 		} catch (IOException e) {
@@ -855,7 +860,16 @@ public class Encoder {
 			RBufferedReader reader = null;
 			reader = new RBufferedReader(new InputStreamReader(ffmpeg
 					.getErrorStream()));
-			//解析信息
+			/**zlc add at 2018-01-17 15:41:20*/
+			String line;
+			while ((line = reader.readLine()) != null) {
+				System.err.println(lastWarning=line);
+			}
+			if(lastWarning!=null){
+				throw new EncoderException(lastWarning);
+			}
+			/**end*/
+			/*//解析信息
 			MultimediaInfo info = parseMultimediaInfo(source, reader);
 			if (durationAttribute != null) {
 				duration = (long) Math
@@ -953,7 +967,7 @@ public class Encoder {
 //					System.out.println("lastWarning:"+lastWarning);
 					throw new EncoderException(lastWarning);
 				}
-			}
+			}*/
 		} catch (IOException e) {
 			throw new EncoderException(e);
 		} finally {
