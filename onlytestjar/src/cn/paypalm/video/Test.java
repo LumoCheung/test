@@ -20,7 +20,8 @@ import java.io.File;
 public class Test {
 	
 	public static void main(String[] args){
-        File source = new File("D:\\\\aaa.avi");
+//        File source = new File("D:\\\\aaa.avi");
+        File source = new File("/Users/zlc/Documents/aaa.avi");
         Encoder encoder = new Encoder();
         try {
              MultimediaInfo m = encoder.getInfo(source);

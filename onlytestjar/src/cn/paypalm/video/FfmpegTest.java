@@ -29,13 +29,15 @@ public class FfmpegTest {
 	public static void main(String[] args) {  
         // *.mp4，*.flv，*..3gp格式均可,其他自行测试  
         // <vedio_path>是你的视频文件路径  
-        File source = new File("D:\\\\aaa.avi");  
-        FFMPEGLocator locator = new FFMPEGLocator() {  
+//        File source = new File("D:\\\\aaa.avi");
+        File source = new File(Contant.sourceFileName);
+        FFMPEGLocator locator = new FFMPEGLocator() {
             @Override  
             protected String getFFMPEGExecutablePath() {  
                 // <ffmpeg_path>是你的ffmpeg.exe路径  
-                return "D:\\\\Java\\ffmpeg-3.4.1\\bin\\ffmpeg.exe";  
-            }  
+//                return "D:\\\\Java\\ffmpeg-3.4.1\\bin\\ffmpeg.exe";
+                return Contant.ppmpgePath;
+            }
         }; 
         Encoder encoder = new Encoder(locator);
 //        Encoder encoder = new Encoder();
@@ -58,7 +60,7 @@ public class FfmpegTest {
 	
 	/** 
      * 获取视频总时间 
-     * @param viedo_path    视频路径 
+     * @param video_path    视频路径
      * @param ffmpeg_path   ffmpeg路径 
      * @return 
      */  

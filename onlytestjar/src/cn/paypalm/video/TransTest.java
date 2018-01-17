@@ -1,36 +1,34 @@
 package cn.paypalm.video;
 
-import java.io.File;
-
+import it.sauronsoftware.jave.*;
 import it.sauronsoftware.jave.AudioAttributes;
-import it.sauronsoftware.jave.Encoder;
 import it.sauronsoftware.jave.EncoderException;
 import it.sauronsoftware.jave.EncodingAttributes;
 import it.sauronsoftware.jave.FFMPEGLocator;
 import it.sauronsoftware.jave.InputFormatException;
 import it.sauronsoftware.jave.VideoAttributes;
 
+import java.io.File;
+
 public class TransTest {
-	static String sourceFileName="D:////aaa - 副本.avi";
-	static String targetFileName="D:////bbb-a.mp4";
-	
+
 	public static void main(String[] args) throws IllegalArgumentException, InputFormatException, EncoderException {
-		FFMPEGLocator locator = new FFMPEGLocator() {  
+		FFMPEGLocator locator = new FFMPEGLocator() {
             @Override  
             protected String getFFMPEGExecutablePath() {  
                 // <ffmpeg_path>是你的ffmpeg.exe路径  
-                return "D:\\\\Java\\ffmpeg-3.4.1\\bin\\ffmpeg.exe";  
+                return Contant.ppmpgePath;
             }  
         }; 
         Encoder encoder = new Encoder(locator);
-		File source = new File(sourceFileName);
-        File target = new File(targetFileName);
+		File source = new File(Contant.sourceFileName);
+        File target = new File(Contant.targetFileName);
         AudioAttributes audio = new AudioAttributes();
         audio.setCodec("libmp3lame");
 //    audio.setBitRate(new Integer(64000));
 //    audio.setChannels(new Integer(1));
 //    audio.setSamplingRate(new Integer(22050));
-        VideoAttributes video = new VideoAttributes();
+        it.sauronsoftware.jave.VideoAttributes video = new VideoAttributes();
 //        video.setCodec("libxvid");// 转MP4
 //        video.setCodec("mpegvideo");
 //        video.setTag("avc");
