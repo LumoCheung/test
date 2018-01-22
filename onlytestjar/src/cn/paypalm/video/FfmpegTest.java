@@ -30,7 +30,7 @@ public class FfmpegTest {
         // *.mp4，*.flv，*..3gp格式均可,其他自行测试  
         // <vedio_path>是你的视频文件路径  
 //        File source = new File("D:\\\\aaa.avi");
-        File source = new File(Contant.sourceFileName);
+        File source = new File(Contant.targetFileName);
         FFMPEGLocator locator = new FFMPEGLocator() {
             @Override  
             protected String getFFMPEGExecutablePath() {  

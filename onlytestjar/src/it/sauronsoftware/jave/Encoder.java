@@ -526,7 +526,7 @@ public class Encoder {
 			int step = 0;
 			while (true) {
 				String line = reader.readLine();
-//				System.out.println("//"+line);
+				System.out.println("//"+line);
 				if (line == null) {
 					break;
 				}
@@ -560,7 +560,10 @@ public class Encoder {
 								+ (hours * 60L * 60L * 1000L);
 						info.setDuration(duration);
 						step++;
-					} else {//直接进行第4步
+					} else if(line.startsWith("  ")){
+						continue;
+					}
+					else {//直接进行第4步
 						step = 3;
 					}
 				} else if (step == 2) {
@@ -674,7 +677,7 @@ public class Encoder {
 		if (info == null) {
 			throw new InputFormatException();
 		}
-//		System.out.println("打印info信息"+info);
+		System.out.println("打印info信息"+info);
 		return info;
 	}
 
