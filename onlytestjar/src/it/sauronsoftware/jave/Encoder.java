@@ -866,7 +866,7 @@ public class Encoder {
 				System.err.println(lastWarning=line);
 			}
 			if(lastWarning!=null){
-				throw new EncoderException(lastWarning);
+//				throw new EncoderException(lastWarning);
 			}
 			/**end*/
 			/*//解析信息
