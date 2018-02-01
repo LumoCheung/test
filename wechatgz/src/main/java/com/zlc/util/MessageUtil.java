@@ -2,18 +2,20 @@ package com.zlc.util;
 
 import com.thoughtworks.xstream.XStream;
 import com.zlc.entity.Message;
+import com.zlc.entity.News;
+import com.zlc.entity.NewsMessage;
+import com.zlc.servlet.WechatServlet;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author zhangzilu02
@@ -46,6 +48,7 @@ public class MessageUtil {
 
     public static final String MESSAGE_SCAN = "SCAN";
 
+    public static final String MESSAGE_NEWS="news";
     /**
 
      * 新建方法，将接收到的XML格式，转化为Map对象
@@ -67,6 +70,7 @@ public class MessageUtil {
         InputStream is = request.getInputStream();//从request中，获取输入流
 
         Document doc =  reader.read(is);//从reader对象中,读取输入流
+
 
         Element root = doc.getRootElement();//获取XML文档的根元素
 
@@ -176,5 +180,46 @@ public class MessageUtil {
 
         return MessageUtil.MessageToXml(text);
 
+    }
+
+    /**
+     * 将图文消息对象转成XML
+     * @param
+     * @return
+     */
+    public static String newsMessageToXml(NewsMessage newsMessage){
+        XStream xstream = new XStream();
+        //将xml的根节点替换成<xml>  默认为NewsMessage的包名
+        xstream.alias("xml", newsMessage.getClass());
+        //同理，将每条图文消息News类的报名，替换为<item>标签
+        xstream.alias("item", new News().getClass());
+        return xstream.toXML(newsMessage);
+    }
+
+
+    /**
+     * 初始化图文消息
+     */
+    public static String initNewsMessage(String toUSerName,String fromUserName){
+        List<News> newsList = new ArrayList<News>();
+        NewsMessage newsMessage = new NewsMessage();
+        //组建一条图文↓ ↓ ↓
+        News newsItem = new News();
+        newsItem.setTitle("名余曰正则兮，字余曰灵均。\n");
+        newsItem.setDescription("日月忽其不淹兮，春与秋其代序。");
+        newsItem.setPicUrl("http://mmbiz.qpic.cn/mmbiz_jpg/qkfJ57xpRDiaicXZfSaNIaCAOV3XaIpbxicI29vv2SrKAr86CibjfYppPa47ia2ZNxvd51XbWwiahWB8MZjx0htdKy6A/0");
+        newsItem.setUrl("https://www.baidu.com");
+        newsList.add(newsItem);
+
+        //组装图文消息相关信息
+        newsMessage.setToUserName(fromUserName);
+        newsMessage.setFromUserName(toUSerName);
+        newsMessage.setCreateTime(new Date().getTime());
+        newsMessage.setMsgType(MESSAGE_NEWS);
+        newsMessage.setArticles(newsList);
+        newsMessage.setArticleCount(newsList.size());
+
+        //调用newsMessageToXml将图文消息转化为XML结构并返回
+        return MessageUtil.newsMessageToXml(newsMessage);
     }
 }

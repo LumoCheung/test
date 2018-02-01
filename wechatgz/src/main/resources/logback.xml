@@ -10,8 +10,10 @@
 		</encoder>
 	</appender>
 	<!-- web开发可以看到参数类型相关的4XX错误 -->
-	<logger name="org.springframework.web" level="debug" /> 
-	
+	<logger name="org.springframework.web" level="debug" />
+	<!--<logger name="org.apache.http" level="info" />-->
+	<!--<logger name="org.apache.http.headers" level="info" />-->
+
 	<root level="debug">
 		<appender-ref ref="STDOUT" />
 	</root>

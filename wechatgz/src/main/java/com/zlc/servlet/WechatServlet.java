@@ -2,6 +2,8 @@ package com.zlc.servlet;
 
 import com.zlc.util.CheckUtil;
 import com.zlc.util.MessageUtil;
+import com.zlc.util.UrlContant;
+import com.zlc.util.WeiXinUtil;
 import org.dom4j.DocumentException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,6 +46,7 @@ public class WechatServlet extends HttpServlet {
         try {
             //将request请求，传到Message工具类的转换方法中，返回接收到的Map对象
             Map<String, String> map = MessageUtil.xmlToMap(request);
+            log.debug("入参：{}",map);
             //从集合中，获取XML各个节点的内容
             String ToUserName = map.get("ToUserName");
             String FromUserName = map.get("FromUserName");
@@ -54,10 +57,17 @@ public class WechatServlet extends HttpServlet {
             if (MsgType.equals(MessageUtil.MESSAGE_TEXT)) {//判断消息类型是否是文本消息(text)
                 if (Content.equals("1")) {
                     message = MessageUtil.initText(ToUserName, FromUserName,
-                            "对啊！我也是这么觉得！帅哭了！");
+                            "帝高阳之苗裔兮，朕皇考曰伯庸。");
                 } else if (Content.equals("2")) {
                     message = MessageUtil.initText(ToUserName, FromUserName,
-                            "好可怜啊！你年级轻轻地就瞎了！");
+                            "路漫漫其修远兮，吾将上下而求索。");
+                } else if (Content.equals("3")) {
+                    message = MessageUtil.initNewsMessage(ToUserName, FromUserName);
+                } else if (Content.equals("xxx")) {
+                    message = MessageUtil.initText(ToUserName, FromUserName,
+                            WeiXinUtil.upload(WeiXinUtil.getAccessToken().getToken()
+                                    ,MessageUtil.MESSAGE_IMAGE, UrlContant.LIN_SHI_SU_CAI_URL
+                                    ,"/Users/zlc/Documents/图片/img-8ad5639f3e101672e6ebb8e31e2dde48.jpg"));
                 } else if (Content.equals("?") || Content.equals("？")) {
                     message = MessageUtil.initText(ToUserName, FromUserName,
                             MessageUtil.menuText());
@@ -74,6 +84,10 @@ public class WechatServlet extends HttpServlet {
                     message = MessageUtil.initText(ToUserName, FromUserName,
                             MessageUtil.menuText());
                 }
+            } else{
+                message=MessageUtil.initText(ToUserName, FromUserName, "您好，" + FromUserName + "\n我是：" + ToUserName
+                        + "\n您发送的消息类型为：" + MsgType + "\n您发送的时间为" + CreateTime
+                        + "\n我回复的时间为：" + new Date().getTime() + "您发送的内容是" + Content);
             }
         } catch (DocumentException e) {
             log.error("出现异常", e);
