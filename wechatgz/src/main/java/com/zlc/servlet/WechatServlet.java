@@ -63,9 +63,11 @@ public class WechatServlet extends HttpServlet {
                             "路漫漫其修远兮，吾将上下而求索。");
                 } else if (Content.equals("3")) {
                     message = MessageUtil.initNewsMessage(ToUserName, FromUserName);
+                }else if (Content.equals("4")) {
+                    message = MessageUtil.initImageMessage(ToUserName, FromUserName);
                 } else if (Content.equals("xxx")) {
                     message = MessageUtil.initText(ToUserName, FromUserName,
-                            WeiXinUtil.upload(WeiXinUtil.getAccessToken().getToken()
+                            WeiXinUtil.upload("",WeiXinUtil.getAccessToken().getToken()
                                     ,MessageUtil.MESSAGE_IMAGE, UrlContant.LIN_SHI_SU_CAI_URL
                                     ,"/Users/zlc/Documents/图片/img-8ad5639f3e101672e6ebb8e31e2dde48.jpg"));
                 } else if (Content.equals("?") || Content.equals("？")) {

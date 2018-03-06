@@ -1,16 +1,11 @@
 package com.zlc.util;
 
 import com.thoughtworks.xstream.XStream;
-import com.zlc.entity.Message;
-import com.zlc.entity.News;
-import com.zlc.entity.NewsMessage;
-import com.zlc.servlet.WechatServlet;
+import com.zlc.entity.*;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -187,13 +182,25 @@ public class MessageUtil {
      * @param
      * @return
      */
-    public static String newsMessageToXml(NewsMessage newsMessage){
+    public static String messageToXml(NewsMessage newsMessage){
         XStream xstream = new XStream();
         //将xml的根节点替换成<xml>  默认为NewsMessage的包名
         xstream.alias("xml", newsMessage.getClass());
         //同理，将每条图文消息News类的报名，替换为<item>标签
         xstream.alias("item", new News().getClass());
         return xstream.toXML(newsMessage);
+    }
+
+    /**
+     * 将图文消息对象转成XML
+     * @param
+     * @return
+     */
+    public static String messageToXml(ImageMesssage messsage){
+        XStream xstream = new XStream();
+        //将xml的根节点替换成<xml>  默认为NewsMessage的包名
+        xstream.alias("xml", messsage.getClass());
+        return xstream.toXML(messsage);
     }
 
 
@@ -220,6 +227,25 @@ public class MessageUtil {
         newsMessage.setArticleCount(newsList.size());
 
         //调用newsMessageToXml将图文消息转化为XML结构并返回
-        return MessageUtil.newsMessageToXml(newsMessage);
+        return MessageUtil.messageToXml(newsMessage);
+    }
+
+    /**
+     * 初始化图消息
+     */
+    public static String initImageMessage(String toUSerName,String fromUserName){
+        ImageMesssage message=new ImageMesssage();
+        Image image=new Image();
+        image.setMediaId("g36-QxZTMmso8Onse17Ao3LXiX3yJXG-L_LoGo95hwE");
+
+        //组装图文消息相关信息
+        message.setToUserName(fromUserName);
+        message.setFromUserName(toUSerName);
+        message.setCreateTime(new Date().getTime());
+        message.setMsgType(MESSAGE_IMAGE);
+        message.setImage(image);
+
+        //调用newsMessageToXml将图文消息转化为XML结构并返回
+        return MessageUtil.messageToXml(message);
     }
 }

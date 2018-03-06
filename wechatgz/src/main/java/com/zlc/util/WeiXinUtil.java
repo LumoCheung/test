@@ -2,27 +2,26 @@ package com.zlc.util;
 
 import com.zlc.entity.AccessToken;
 import net.sf.json.JSONObject;
+import org.apache.commons.lang.StringUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.nio.charset.Charset;
 
 /**
@@ -36,6 +35,8 @@ public class WeiXinUtil {
     private static final String APPID = "wx64c678f340e44dfa";
     private static final String APPSECRET = "c31699e2de7db0f4164d0d4d6b26b4ff";
     private static final String ACCESS_TOKEN_URL = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=APPID&secret=APPSECRET";
+
+
     /**
      * 编写Get请求的方法。但没有参数传递的时候，可以使用Get请求
      *
@@ -50,6 +51,7 @@ public class WeiXinUtil {
         HttpEntity entity = response.getEntity();//从response中获取结果，类型为HttpEntity
         if(entity != null){
             String result = EntityUtils.toString(entity,"UTF-8");//HttpEntity转为字符串类型
+            log.debug("result:{}",result);
             jsonObject = JSONObject.fromObject(result);//字符串类型转为JSON类型
         }
         return jsonObject;
@@ -69,6 +71,7 @@ public class WeiXinUtil {
         httpost.setEntity(new StringEntity(outStr,"UTF-8"));//使用setEntity方法，将我们传进来的参数放入请求中
         HttpResponse response = client.execute(httpost);//使用HttpResponse接收client执行httpost的结果
         String result = EntityUtils.toString(response.getEntity(),"UTF-8");//HttpEntity转为字符串类型
+        log.debug("result:{}",result);
         jsonObject = JSONObject.fromObject(result);//字符串类型转为JSON类型
         return jsonObject;
     }
@@ -88,7 +91,7 @@ public class WeiXinUtil {
         return token;
     }
 
-    public static String upload(String accessToken,String type,String postUrl,String postFile){
+    public static String upload(String formName,String accessToken,String type,String postUrl,String postFile){
 //        Map<String,Object> resultMap = new HashMap<String,Object>();
         CloseableHttpClient httpClient = HttpClients.createDefault();
         try{
@@ -98,7 +101,7 @@ public class WeiXinUtil {
             FileBody fundFileBin = new FileBody(new File(postFile));
             //设置传输参数
             MultipartEntityBuilder multipartEntity = MultipartEntityBuilder.create();
-            multipartEntity.addPart(postFile, fundFileBin).setMode(HttpMultipartMode.RFC6532);//相当于<input type="file" name="media"/>
+            multipartEntity.addPart(StringUtils.isBlank(formName)?postFile:formName, fundFileBin).setMode(HttpMultipartMode.RFC6532);//相当于<input type="file" name="media"/>
 //            multipartEntity.addBinaryBody(postFile,new FileInputStream(postFile), ContentType.MULTIPART_FORM_DATA,postFile).setMode(HttpMultipartMode.RFC6532);
 //            multipartEntity.addBinaryBody(postFile.getName(),new FileInputStream(postFile),ContentType.MULTIPART_FORM_DATA,postFile.getName()).setMode(HttpMultipartMode.RFC6532);
 
@@ -150,15 +153,78 @@ public class WeiXinUtil {
         return null;
     }
 
+    @Deprecated
+    public static String upload2(String accessToken,String type,String postUrl,String postFile) throws IOException {
+//        Map<String,Object> resultMap = new HashMap<String,Object>();
+        HttpURLConnection conn= (HttpURLConnection) new URL(
+                postUrl.replace("ACCESS_TOKEN",accessToken).replace("TYPE",type)
+        ).openConnection();
+
+        conn.setRequestMethod("POST");
+        conn.setDoInput(true);
+        conn.setDoOutput(true);
+        conn.setUseCaches(false);
+
+        String boundary="---------"+System.currentTimeMillis();
+        conn.setRequestProperty("Content-Type","multipart/form-data; boundary="+boundary);
+        conn.setRequestProperty("Charset","UTF-8");
+        File uploadFile=new File(postFile);
+        StringBuilder sb=new StringBuilder();
+        sb.append("--").append(boundary).append("\r\n").append(
+                String.format("Content-Disposition:form-data;name=\"%s\";filelength=\"%s\";filename=\"%s\"\r\n" +
+                        "Content-Type:application/octet-stream\r\n\r\n"
+                        , "media",uploadFile.length(), uploadFile.getName()));
+
+        OutputStream output=conn.getOutputStream();
+        output.write(sb.toString().getBytes("utf-8"));
+
+        DataInputStream input=new DataInputStream(new FileInputStream(uploadFile));
+        int read=-1;
+        byte[] buffer=new byte[1024];
+        while((read=input.read(buffer))!=-1){
+            output.write(buffer);
+        }
+        input.close();
+        byte[] foot=("/r/n--"+boundary+"--/r/n").getBytes("utf-8");
+        output.write(foot);
+        output.flush();
+        output.close();
+
+        StringBuffer buf=new StringBuffer();
+        BufferedReader reader=null;
+        String result=null;
+        try{
+            reader=new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            String line=null;
+            while ((line=reader.readLine())!=null){
+                buf.append(line);
+            }
+            if(result==null) result=buf.toString();
+
+        } catch (ClientProtocolException e1) {
+            e1.printStackTrace();
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        } finally{
+            if(reader!=null)
+                reader.close();
+        }
+//        log.info("uploadFileByHTTP result:"+ );
+//        return resultMap;
+        log.debug("----------------------------------");
+        log.debug("result:"+result);
+        return result;
+    }
+
     public static void main(String[] args) throws IOException {
         String token=WeiXinUtil.getAccessToken().getToken();
-        String data=WeiXinUtil.upload(token
+        String data=WeiXinUtil.upload("media",token
                 ,MessageUtil.MESSAGE_IMAGE, UrlContant.QT_YONGJIU_SUCAI_URL
                 ,"/Users/zlc/Documents/图片/img-8ad5639f3e101672e6ebb8e31e2dde48.jpg");
-        /*JSONObject object=JSONObject.fromObject(data);
+        JSONObject object=JSONObject.fromObject(data);
         log.info(object.toString());
         String mediaId=object.getString("media_id");
-        data=WeiXinUtil.upload(token
+        data=WeiXinUtil.upload("",token
                 ,MessageUtil.MESSAGE_IMAGE, UrlContant.TW_2_URL
                 ,"/Users/zlc/Documents/图片/img-8ad5639f3e101672e6ebb8e31e2dde48.jpg");
         object=JSONObject.fromObject(data);
@@ -197,7 +263,8 @@ public class WeiXinUtil {
                 "昔三后之纯粹兮，固众芳之所在。\n" +
                 "<img src=\""+url+" \" />");
         o.accumulate("content_source_url","http://hanyu.baidu.com/shici/detail?pid=9ad3463ac8944527947d959b7c8b1f8e&from=kg0");
-        log.debug(o.toString());*/
+        log.debug(o.toString());
+        doPostStr(UrlContant.TW_YONGJIU_SUCAI_URL.replace("ACCESS_TOKEN",token),o.toString());
     }
 
 }
