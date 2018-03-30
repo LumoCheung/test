@@ -55,9 +55,9 @@ public class TestTransaction {
 
 		TransactionService service=context.getBean("transactionService", TransactionService.class);
 		//初始化-事务调用非事务
-		service.insert(bean);
+//		service.insert(bean);
         //传播机制
-//		service.Update(bean);
+		service.Update(bean);
 
         //乐观锁
 //        service.update(bean);
