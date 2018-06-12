@@ -8,6 +8,8 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * zlc
@@ -18,6 +20,8 @@ public class TransactionService {
     private IActionDao actionDao;
     @Resource
     private SelectService selectService;
+
+    ExecutorService threadpool=Executors.newCachedThreadPool();
 
     @Transactional(propagation = Propagation.REQUIRED,rollbackFor = Exception.class)
     public void Update(ActionBean bean){
@@ -121,6 +125,21 @@ public class TransactionService {
         // Cannot find current proxy: Set 'exposeProxy' property on Advised to 'true' to make it available.
         //需要开启
         ((TransactionService)AopContext.currentProxy()).update(bean);
+    }
+
+    /**
+     * 测试异步是否会使用事务
+     * @param bean
+     */
+//    @Transactional(rollbackFor = Exception.class)
+    public void insertAsyn(final ActionBean bean){
+        threadpool.submit(new Runnable() {
+            @Override
+            public void run() {
+                //线程池的方法会使用事务，忽略了同个对象之间相互调用，不使用事务
+                insert(bean);
+            }
+        });
     }
 
 }

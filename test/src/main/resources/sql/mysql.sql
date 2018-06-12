@@ -1,4 +1,4 @@
-create table IF NOT EXISTS M_ACTION
+create table IF NOT EXISTS `m_action`
 (
   actionsn    INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
   actiontype  INT UNSIGNED not null,
@@ -14,4 +14,4 @@ create table IF NOT EXISTS M_ACTION
   msgid       VARCHAR(32),
   issuccess   INT UNSIGNED,
   isrefund    INT UNSIGNED
-)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+)ENGINE=InnoDB;

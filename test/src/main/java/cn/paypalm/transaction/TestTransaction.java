@@ -57,13 +57,16 @@ public class TestTransaction {
 		//初始化-事务调用非事务
 //		service.insert(bean);
         //传播机制
-		service.Update(bean);
+//		service.Update(bean);
 
         //乐观锁
 //        service.update(bean);
 
         //无事务方法调用有事务方法
 //        service.updateA(bean);
+
+		//异步测试事务
+		service.insertAsyn(bean);
 	}
 
 }
